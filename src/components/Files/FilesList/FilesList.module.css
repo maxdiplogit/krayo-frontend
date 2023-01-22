@@ -1,0 +1,11 @@
+.filesList {
+    padding: 0rem 10rem;
+    background: rgb(29, 29, 29);
+}
+
+ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

@@ -1,17 +1,34 @@
+// Packages
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistStore } from 'redux-persist';
+import { BrowserRouter } from 'react-router-dom';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
+// Store
+import store from './store/index';
+
+// Components
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+
+// Styles
+import './index.css';
+
+
+let persistor = persistStore(store);
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+	<BrowserRouter>
+		<GoogleOAuthProvider clientId={ '447079852716-db63djf5vlqoj9234sk8d3qh3pfjl1hh.apps.googleusercontent.com' }>
+			<Provider store={ store }>
+				<PersistGate loading={ null } persistor={ persistor }>
+					<App />
+				</PersistGate>
+			</Provider>
+		</GoogleOAuthProvider>
+	</BrowserRouter>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

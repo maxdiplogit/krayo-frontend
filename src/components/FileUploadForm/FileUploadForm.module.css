@@ -1,0 +1,30 @@
+form {
+    background: whitesmoke;
+    padding: 2rem 15rem 2rem 15rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 0.5rem;
+    border: 1px solid white;
+}
+
+.uploadButton {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid plum;
+    background: white;
+    color: burlywood;
+}
+
+.uploadButton:hover {
+    color: rgb(13, 163, 96);
+    background: lightblue;
+    cursor: pointer;
+}
+
+.uploadButton:disabled {
+    background: rgb(76, 76, 76);
+    color: rgb(188, 156, 114);
+    cursor: default;
+}

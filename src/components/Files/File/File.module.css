@@ -1,0 +1,13 @@
+.fileButton {
+    background: white;
+    border: 1px solid rgb(198, 198, 198);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.fileButton:hover {
+    cursor: pointer;
+    background: lemonchiffon;
+}
