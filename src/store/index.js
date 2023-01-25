@@ -12,7 +12,7 @@ import {
 } from 'redux-persist';
 
 
-const initialLoginState = { loggedInUser: {} };
+const initialLoginState = { loggedInUser: {}, accessToken: '', filesList: [] };
 
 
 const authSlice = createSlice({
@@ -22,8 +22,11 @@ const authSlice = createSlice({
         changeLoggedInUser(currentState, action) {
             currentState.loggedInUser = action.payload;
         },
+        changeAccessToken(currentState, action) {
+            currentState.accessToken = action.payload;
+        },
         changeFilesList(currentState, action) {
-            currentState.loggedInUser.filesList = action.payload;
+            currentState.filesList = action.payload;
         }
     }
 });

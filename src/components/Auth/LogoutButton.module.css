@@ -1,13 +1,14 @@
 .logoutButton {
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
-    border: 1px solid plum;
+    border: 1px solid rgb(39, 39, 39);;
     color: burlywood;
-    background: white;
+    background: rgb(39, 39, 39);
 }
 
 .logoutButton:hover {
-    color: rgb(13, 163, 96);
-    background: lightblue;
+    color: rgb(19, 202, 205);
+    transition: 0.3s ease-in;
+    background: white;
     cursor: pointer;
 }

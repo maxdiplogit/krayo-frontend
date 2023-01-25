@@ -19,14 +19,17 @@ const Login = () => {
     const dispatch = useDispatch();
 
     const onSuccess = async (res) => {
+        const access_token = res.credential;
         const decoded = jwt_decode(res.credential);
         try {
-            const res = await axios.get(`http://localhost:4500/getFiles/${ decoded.email }`);
-            decoded.filesList = res.data.files;
-            console.log(decoded);
-            dispatch(authActions.changeLoggedInUser(decoded));
+            const response = await axios.post('http://localhost:4500/auth/verifyToken', {
+                accessToken: `${ access_token }`
+            });
+            console.log(response);
+            dispatch(authActions.changeLoggedInUser(response.data.user));
+            dispatch(authActions.changeAccessToken(response.data.accessToken));
         } catch (err) {
-            console.log('Could not get the files from the server');
+            console.log('Token could not be verified');
             console.log(err);
         }
     };

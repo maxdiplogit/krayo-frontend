@@ -18,6 +18,8 @@ const FileUploadForm = () => {
     const fileRef = useRef();
 
     const loggedInUser = useSelector((state) => state.auth.loggedInUser);
+    const accessToken = useSelector((state) => state.auth.accessToken);
+
     const [ selectedFile, setSelectedFile ] = useState(null);
 
     const formSubmitHandler = async (event) => {
@@ -25,21 +27,27 @@ const FileUploadForm = () => {
 
         let formData = new FormData();
 
-        formData.append('loggedInUser', loggedInUser);
-        formData.append('email', loggedInUser.email);
+        formData.append('loggedInUser', JSON.stringify(loggedInUser));
         formData.append('file', selectedFile);
 
         try {
             fileRef.current.value = null;
             setSelectedFile(null);
-            const res = await axios.post('http://localhost:4500/upload', formData, {
+            console.log(accessToken);
+            const res = await axios.post('http://localhost:4500/file/upload', formData, {
                 headers: {
-                    'content-type': 'multipart/form-data'
+                    'Content-type': 'multipart/form-data',
+                    'Authorization': `Bearer ${ accessToken }`
                 }
             });
-            const res1 = await axios.get(`http://localhost:4500/getFiles/${ loggedInUser.email }`);
+            console.log(res);
+            const res1 = await axios.get(`http://localhost:4500/file/getFiles/${ loggedInUser._id }`, {
+                headers: {
+                    'authorization': `Bearer ${ accessToken }`
+                }
+            });
             console.log(res1.data);
-            dispatch(authActions.changeFilesList(res1.data.files));
+            dispatch(authActions.changeFilesList(res1.data.files.sort((a, b) => new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime())));
         } catch (err) {
             console.log('Oh no! Could not upload the file!');
             console.log(err);

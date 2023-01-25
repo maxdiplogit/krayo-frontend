@@ -1,4 +1,5 @@
 import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 
 // React Hooks
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,9 +20,12 @@ import classes from './Home.module.css';
 
 
 // Returns a boolean based on whether the accessToken being used has expired or not
-const checkAccessTokenValid = (loggedInUser) => {
+const checkAccessTokenValid = (access_token) => {
+    if (access_token.length === 0) {
+        return false;
+    }
     const now = parseInt(Date.now() / 1000);
-    const expiry = loggedInUser.exp;
+    const expiry = jwtDecode(access_token).exp;
     console.log('Now: ', now);
     console.log('Expiry: ', expiry);
     return now < expiry;
@@ -34,38 +38,25 @@ const Home = () => {
     const [ flag, setFlag ] = useState(false);
 
     const loggedInUser = useSelector((state) => state.auth.loggedInUser);
-
-    useEffect(() => {
-        const getFiles = async (fLoggedInUser) => {
-            try {
-                const res = await axios.get(`http://localhost:4500/getFiles/${ fLoggedInUser.email }`);
-                dispatch(authActions.changeFilesList(res.data.files));
-            } catch(err) {
-                console.log(err);
-            }
-        };
-
-        if (Object.keys(loggedInUser).length > 1) {
-            getFiles(loggedInUser);
-        }
-    }, []);
+    const accessToken = useSelector((state) => state.auth.accessToken);
+    console.log(accessToken);
     
     let navContent = <>
         <Login />
     </>;
     let content = <>
-        <h1>Not Logged In</h1>
+        <p className={ classes.notLoggedIn }>Not Logged In</p>
     </>;
 
     // If loggedInUser does not exist, then make sure that isLoggedIn is also false and the accessToken is also an empty string
-    if ((!checkAccessTokenValid(loggedInUser) && Object.keys(loggedInUser).length > 1 && !flag) || (Object.keys(loggedInUser).length <= 1 && !flag)) {
+    if ((accessToken.length === 0 || !loggedInUser || !checkAccessTokenValid(accessToken)) && !flag) {
         dispatch(authActions.changeLoggedInUser({}));
+        dispatch(authActions.changeAccessToken(''));
         dispatch(authActions.changeFilesList([]));
         setFlag(true);
     }
 
     console.log(loggedInUser);
-    console.log(checkAccessTokenValid(loggedInUser));
     
     if (Object.keys(loggedInUser).length > 1) {
         navContent = <><LogoutButton /></>;
@@ -82,7 +73,7 @@ const Home = () => {
     return (
         <div className={ classes.home }>
             <header>
-                <h1>
+                <h1 className={ classes.heading }>
                     Krayo
                 </h1>
                 <div className={ classes.nav }>
