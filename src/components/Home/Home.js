@@ -61,6 +61,9 @@ const Home = () => {
     if (Object.keys(loggedInUser).length > 1) {
         navContent = <><LogoutButton /></>;
         content = <>
+            <div>
+                <h1 className={ classes.nameHeading }>{ loggedInUser.name }</h1>
+            </div>
             <div className={ classes.fileUploadForm }>
                 <FileUploadForm />
             </div>

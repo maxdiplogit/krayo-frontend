@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // React Hooks
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // Components
@@ -21,6 +21,8 @@ const FilesList = () => {
     const filesList = useSelector((state) => state.auth.filesList);
     const accessToken = useSelector((state) => state.auth.accessToken);
 
+    let content = <></>;
+
     useEffect(() => {
         const getFiles = async (userId) => {
             try {
@@ -38,8 +40,6 @@ const FilesList = () => {
 
         getFiles(loggedInUser._id);
     }, []);
-
-    let content = <></>;
 
     if (filesList.length === 0) {
         content = <>
